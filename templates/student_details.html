@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<<<<<<< HEAD
 <style>
     /* --- PROFILE CARD STYLING --- */
     .profile-card {
@@ -158,4 +159,50 @@
     </div>
 
 </div>
+=======
+    <h2>👤 {{ student.name }} ({{ student.register_number }})</h2>
+    <p><strong>Email:</strong> {{ student.email }}</p>
+    <p><strong>Department:</strong> {{ student.department }}</p>
+    
+    <a href="{% url 'update_student' pk=student.id %}" class="btn">✏️ Edit Profile</a>
+    
+    <hr>
+    
+    <h3>🏆 Achievements</h3>
+    <a href="{% url 'add_achievement' student_id=student.id %}" class="btn btn-success">+ Add Achievement</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ach in achievements %}
+            <tr>
+                <td>{{ ach.title }}</td>
+                <td>{{ ach.date }}</td>
+                <td>
+                    {% if ach.status == 'Approved' %}
+                        <span style="color:green; font-weight:bold;">Approved</span>
+                    {% elif ach.status == 'Rejected' %}
+                        <span style="color:red; font-weight:bold;">Rejected</span>
+                    {% else %}
+                        <span style="color:orange; font-weight:bold;">Pending</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'update_status' pk=ach.id status='Approved' %}" class="btn btn-success">Approve</a>
+                    <a href="{% url 'update_status' pk=ach.id status='Rejected' %}" class="btn btn-danger">Reject</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No achievements uploaded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+>>>>>>> 3d1d447640262089d355608f7ccc66bfd9ed2cd1
 {% endblock %}

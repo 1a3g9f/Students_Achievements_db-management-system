@@ -79,6 +79,7 @@ def update_category(request, pk):
     category = get_object_or_404(Category, pk=pk)
     if request.method == 'POST':
         category.name = request.POST.get('name')
+<<<<<<< HEAD
         
         # --- CHANGE THIS LINE ---
         # If description is empty, save "No Description Provided" instead of crashing
@@ -86,6 +87,11 @@ def update_category(request, pk):
         
         category.save()
         return redirect('add_category')
+=======
+        category.description = request.POST.get('description')
+        category.save()
+        return redirect('add_category') # Go back to the main list
+>>>>>>> 3d1d447640262089d355608f7ccc66bfd9ed2cd1
     
     return render(request, 'category_update.html', {'category': category})
 

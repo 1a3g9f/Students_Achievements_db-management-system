@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<<<<<<< HEAD
 <style>
     /* --- FORM STYLING --- */
     .form-control {
@@ -76,4 +77,21 @@
         </div>
     </div>
 </div>
+=======
+    <h2>✏️ Edit Category: {{ category.name }}</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        <label>Category Name:</label><br>
+        <input type="text" name="name" value="{{ category.name }}" required>
+        <br><br>
+        
+        <label>Description:</label><br>
+        <textarea name="description" rows="3">{{ category.description }}</textarea>
+        <br><br>
+        
+        <button type="submit" class="btn btn-success">💾 Save Changes</button>
+        <a href="{% url 'add_category' %}" class="btn btn-danger">❌ Cancel</a>
+    </form>
+>>>>>>> 3d1d447640262089d355608f7ccc66bfd9ed2cd1
 {% endblock %}
