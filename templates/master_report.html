@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>📑 Master Data Report (JOIN Operation)</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Student Name (Table A)</th>
+            <th>Department (Table A)</th>
+            <th>Achievement Title (Table B)</th>
+            <th>Category (Table C)</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ach in achievements %}
+        <tr>
+            <td>{{ ach.student.name }}</td>
+            <td>{{ ach.student.department }}</td>
+            
+            <td>{{ ach.title }}</td>
+            
+            <td>
+                {% if ach.category %}
+                    {{ ach.category.name }}
+                {% else %}
+                    <span style="color:red;">Uncategorized</span>
+                {% endif %}
+            </td>
+            
+            <td>{{ ach.date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

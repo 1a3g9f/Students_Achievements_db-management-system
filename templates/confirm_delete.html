@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 50px auto; text-align: center; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #fff;">
+    
+    <h2 style="color: #dc3545;">⚠️ Delete Warning</h2>
+    <p>Are you sure you want to delete the student <strong>"{{ student.name }}"</strong>?</p>
+    
+    <p style="color: grey; font-size: 0.9em;">
+        This action cannot be undone. All achievements associated with this student will also be deleted.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <button type="submit" class="btn btn-danger">🗑️ Yes, Delete</button>
+        <a href="{% url 'student_list' %}" class="btn btn-secondary">❌ Cancel</a>
+    </form>
+
+</div>
+{% endblock %}

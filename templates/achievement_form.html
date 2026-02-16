@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Add Achievement</h2>
+    <p>Please upload the achievement details below.</p>
+    <div style="margin-bottom: 15px; padding: 10px; background: #e9ecef; border-radius: 5px;">
+        <span>Don't see your category? </span>
+        <a href="{% url 'add_category' %}?next={{ request.path }}" target="_blank" class="btn btn-primary" style="margin-left: 10px;">
+            ➕ Create New Category
+        </a>
+        <br>
+        <small style="color: grey;">(Click above to add a category, then refresh this page)</small>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <br>
+        <button type="submit" class="btn btn-success">✅ Save Achievement</button>
+        <a href="javascript:history.back()" class="btn btn-danger">❌ Cancel</a>
+    </form>
+{% endblock %}
