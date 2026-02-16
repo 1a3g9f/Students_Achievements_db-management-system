@@ -1,6 +1,100 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<<<<<<< HEAD
+<style>
+    /* --- DANGER CARD STYLING --- */
+    .danger-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(220, 53, 69, 0.15); /* Red tinted shadow */
+        border: none;
+        overflow: hidden;
+        position: relative;
+        animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    /* Gradient Header for Danger */
+    .danger-header {
+        background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+        padding: 40px 30px;
+        text-align: center;
+        color: white;
+    }
+
+    /* Warning Icon Animation */
+    .pulsing-icon {
+        animation: pulse 2s infinite;
+    }
+
+    /* Custom Danger Button */
+    .btn-danger-gradient {
+        background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+    }
+    .btn-danger-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 65, 108, 0.4);
+        color: white;
+    }
+
+    @keyframes popIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.1); opacity: 1; }
+        100% { transform: scale(1); opacity: 0.8; }
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-6 col-lg-5">
+        
+        <div class="danger-card">
+            <div class="danger-header">
+                <div class="bg-white bg-opacity-25 rounded-circle d-inline-flex p-3 mb-3 pulsing-icon">
+                    <i class="fas fa-trash-alt fa-3x text-white"></i>
+                </div>
+                <h3 class="fw-bold m-0">Delete Student?</h3>
+                <p class="opacity-75 m-0 mt-2">This process cannot be undone.</p>
+            </div>
+            
+            <div class="p-5 text-center">
+                <p class="text-muted mb-4" style="font-size: 1.1rem;">
+                    Are you sure you want to permanently remove <br>
+                    <strong class="text-dark fs-5">{{ student.name }}</strong>?
+                </p>
+
+                <div class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger rounded-4 p-3 mb-4 text-start">
+                    <div class="d-flex">
+                        <i class="fas fa-exclamation-triangle mt-1 me-3"></i>
+                        <small style="line-height: 1.4;">
+                            <strong>Warning:</strong> Deleting this student will also permanently erase all their uploaded achievements and records from the database.
+                        </small>
+                    </div>
+                </div>
+
+                <form method="post" class="d-grid gap-3">
+                    {% csrf_token %}
+                    
+                    <button type="submit" class="btn btn-danger-gradient rounded-pill py-3 fw-bold shadow-sm">
+                        Yes, Delete Permanently
+                    </button>
+                    
+                    <a href="{% url 'student_list' %}" class="btn btn-light rounded-pill py-3 fw-bold text-muted hover-scale">
+                        No, Keep Student
+                    </a>
+                </form>
+            </div>
+        </div>
+
+    </div>
+=======
 <div style="max-width: 500px; margin: 50px auto; text-align: center; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #fff;">
     
     <h2 style="color: #dc3545;">⚠️ Delete Warning</h2>
@@ -17,5 +111,6 @@
         <a href="{% url 'student_list' %}" class="btn btn-secondary">❌ Cancel</a>
     </form>
 
+>>>>>>> 3d1d447640262089d355608f7ccc66bfd9ed2cd1
 </div>
 {% endblock %}
