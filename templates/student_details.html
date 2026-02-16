@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* --- PROFILE CARD STYLING --- */
+    .profile-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Decorative background shape */
+    .profile-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 150px;
+        height: 100%;
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        opacity: 0.5;
+        transform: skewX(-20deg) translateX(50px);
+        z-index: 0;
+    }
+
+    /* --- BADGE STYLES --- */
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .badge-approved { background-color: #d1fae5; color: #065f46; }
+    .badge-rejected { background-color: #fee2e2; color: #991b1b; }
+    .badge-pending { background-color: #fef3c7; color: #92400e; }
+
+    /* --- TABLE STYLING --- */
+    .table-custom th {
+        color: #718096;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #edf2f7;
+        padding-bottom: 15px;
+    }
+    .table-custom td {
+        vertical-align: middle;
+        padding: 20px 10px;
+        border-bottom: 1px solid #edf2f7;
+        color: #2d3748;
+        font-weight: 500;
+    }
+    .table-custom tr:last-child td { border-bottom: none; }
+</style>
+
+<div class="container-fluid px-0">
+
+    <div class="profile-card">
+        <img src="https://ui-avatars.com/api/?name={{ student.name }}&background=667eea&color=fff&size=128" 
+             class="rounded-circle shadow-sm" style="width: 100px; height: 100px; z-index: 1;">
+        
+        <div style="flex-grow: 1; z-index: 1;">
+            <h2 class="fw-bold m-0" style="color: #2d3748;">{{ student.name }}</h2>
+            <p class="text-muted mb-2">ID: #{{ student.register_number }}</p>
+            
+            <div class="d-flex gap-4 text-secondary" style="font-size: 0.9rem;">
+                <span><i class="fas fa-envelope me-2 text-primary"></i> {{ student.email }}</span>
+                <span><i class="fas fa-university me-2 text-primary"></i> {{ student.department }}</span>
+            </div>
+        </div>
+
+        <a href="{% url 'update_student' pk=student.id %}" class="btn btn-outline-secondary rounded-pill px-4" style="z-index: 1;">
+            <i class="fas fa-pencil-alt me-2"></i> Edit Profile
+        </a>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold m-0">🏆 Achievements</h4>
+            <small class="text-muted">Track records and approval status.</small>
+        </div>
+        <a href="{% url 'add_achievement' student_id=student.id %}" 
+           class="btn text-white rounded-pill px-4 py-2 shadow-sm hover-scale"
+           style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+            <i class="fas fa-plus me-2"></i> Add Record
+        </a>
+    </div>
+
+    <div class="bg-white rounded-4 shadow-sm p-4">
+        <div class="table-responsive">
+            <table class="table table-custom table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Achievement Title</th>
+                        <th style="width: 20%;">Date</th>
+                        <th style="width: 15%;">Status</th>
+                        <th style="width: 25%; text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ach in achievements %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light rounded p-2 me-3 text-secondary">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <span class="fw-bold">{{ ach.title }}</span>
+                            </div>
+                        </td>
+                        <td>{{ ach.date }}</td>
+                        <td>
+                            {% if ach.status == 'Approved' %}
+                                <span class="status-badge badge-approved">Approved</span>
+                            {% elif ach.status == 'Rejected' %}
+                                <span class="status-badge badge-rejected">Rejected</span>
+                            {% else %}
+                                <span class="status-badge badge-pending">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'update_status' pk=ach.id status='Approved' %}" 
+                                   class="btn btn-sm btn-outline-success" title="Approve">
+                                    <i class="fas fa-check"></i>
+                                </a>
+                                <a href="{% url 'update_status' pk=ach.id status='Rejected' %}" 
+                                   class="btn btn-sm btn-outline-danger" title="Reject">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-5">
+                            <div class="opacity-50">
+                                <i class="fas fa-folder-open fa-3x mb-3 text-secondary"></i>
+                                <p>No achievements found for this student.</p>
+                                <a href="{% url 'add_achievement' student_id=student.id %}" class="btn btn-sm btn-link">Add the first one</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

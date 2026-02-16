@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* --- MODERN INPUT STYLES --- */
+    .form-control {
+        border-radius: 12px;
+        border: 2px solid #e2e8f0;
+        padding: 12px 15px;
+        background-color: #f8fafc;
+        transition: all 0.3s ease;
+    }
+    .form-control:focus {
+        background-color: #fff;
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+    }
+
+    /* --- CARD STYLES --- */
+    .modern-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        border: none;
+        overflow: hidden;
+    }
+
+    /* --- ACTION BUTTONS (Round Icons) --- */
+    .btn-icon {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: transform 0.2s;
+        text-decoration: none;
+    }
+    .btn-icon:hover { transform: scale(1.15); }
+    
+    .btn-edit { background-color: #fff7ed; color: #d97706; border: 1px solid #ffedd5; }
+    .btn-delete { background-color: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
+
+    /* --- TABLE HEADER --- */
+    .table-modern th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+        font-weight: 700;
+        background-color: #f8fafc;
+        padding: 15px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    .table-modern td {
+        padding: 15px;
+        vertical-align: middle;
+        color: #334155;
+        border-bottom: 1px solid #f1f5f9;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row g-4">
+        
+        <div class="col-lg-4">
+            <div class="modern-card p-4 h-100">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-3 text-primary">
+                        <i class="fas fa-tags fa-lg"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold m-0" style="color: #1e293b;">New Category</h5>
+                        <small class="text-muted">Create a classification.</small>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-secondary" style="font-size: 0.8rem;">CATEGORY NAME</label>
+                        <input type="text" name="name" class="form-control" placeholder="e.g. Sports, Cultural..." required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-secondary" style="font-size: 0.8rem;">DESCRIPTION</label>
+                        <textarea name="description" class="form-control" rows="4" placeholder="Brief details regarding this category..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn text-white w-100 fw-bold rounded-pill py-2 shadow-sm hover-scale" 
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                        <i class="fas fa-plus-circle me-2"></i> Save Category
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="modern-card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold m-0" style="color: #1e293b;">
+                        <i class="fas fa-list-ul me-2 text-secondary"></i> Existing Categories
+                    </h5>
+                    <span class="badge bg-light text-dark border">Total: {{ categories|length }}</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-modern table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">ID</th>
+                                <th style="width: 25%;">Name</th>
+                                <th style="width: 45%;">Description</th>
+                                <th style="width: 20%; text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cat in categories %}
+                            <tr>
+                                <td>
+                                    <span class="text-muted small">#{{ cat.id }}</span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-dark">{{ cat.name }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-muted small">{{ cat.description|default:"--"|truncatechars:60 }}</span>
+                                </td>
+                                <td class="text-end">
+                                    <a href="{% url 'update_category' pk=cat.id %}" class="btn-icon btn-edit me-1" title="Edit">
+                                        <i class="fas fa-pencil-alt fa-xs"></i>
+                                    </a>
+                                    <a href="{% url 'delete_category' pk=cat.id %}" class="btn-icon btn-delete" 
+                                       onclick="return confirm('Are you sure you want to delete this category?');" title="Delete">
+                                        <i class="fas fa-trash-alt fa-xs"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <i class="fas fa-folder-open fa-3x text-light mb-3"></i>
+                                    <p class="text-muted">No categories found yet.</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
